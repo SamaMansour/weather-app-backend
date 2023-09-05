@@ -5,9 +5,11 @@ import { WeatherModule } from './weather/weather.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [ WeatherModule, AuthModule, UsersModule],
+  imports: [ WeatherModule, AuthModule, UsersModule, UserModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })

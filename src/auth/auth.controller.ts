@@ -1,28 +1,24 @@
-import { Controller, Post, Request, UseGuards, Body, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '../users/dto/create-user.dto'
+import { LocalAuthGuard } from './local-auth.guard';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService
+  ) {}
 
   @Post('signup')
-  async signup(@Body() createUserDto: CreateUserDto) {
-    const user = await this.authService.signup(createUserDto);
-    if (!user) {
-      throw new BadRequestException('User registration failed');
-    }
-    const token = await this.authService.login(user);
-    return { user, token };
+  async signUp(@Body() body: { username: string; password: string }) {
+    await this.userService.createUser(body.username, body.password);
+    return { message: 'User created successfully' };
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    const user = await this.authService.validateUser(req.body.username, req.body.password);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const token = await this.authService.login(user);
-    return { user, token };
+    return this.authService.login(req.user);
   }
 }
