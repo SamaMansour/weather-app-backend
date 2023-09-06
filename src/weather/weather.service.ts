@@ -17,9 +17,7 @@ export class WeatherService {
       const data = response.data;
 
       return {
-        temperature: data.main.temp,
-        dayForecast: data.weather[0].description,
-        icon: data.weather[0].icon,
+        data
       };
     } catch (error) {
       throw new Error('Failed to fetch weather data');
