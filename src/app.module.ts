@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 
+
 @Module({
   imports: [ WeatherModule, AuthModule, UserModule],
   controllers: [AppController],
