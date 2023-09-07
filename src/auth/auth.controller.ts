@@ -23,7 +23,7 @@ export class AuthController {
     })
   }
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() body: { username: string; password: string }) {
     await this.prismaService.$transaction( async (prisma: Prisma.TransactionClient) => {

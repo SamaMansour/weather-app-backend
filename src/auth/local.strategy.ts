@@ -14,12 +14,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
 
   async validate(username: string, password: string) {
-  //   await this.prismaService.$transaction( async (prisma: Prisma.TransactionClient) => {
-  //   const user = await this.authService.validateUser(username, password, prisma);
-  //   if (!user) {
-  //     throw new UnauthorizedException();
-  //   }
-  //   return user;
-  // })
+   (prisma: Prisma.TransactionClient) => {
+    const user = this.authService.validateUser(username, password, prisma);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+   }
   }
 }
