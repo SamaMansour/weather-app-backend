@@ -1,6 +1,4 @@
-// src/weather/weather.service.ts
-
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 
@@ -9,10 +7,10 @@ export class WeatherService {
   constructor(private readonly configService: ConfigService) {}
 
   async getWeather(city: string) {
-    const apiKey = this.configService.get<string>('OPEN_WEATHER_API_KEY');
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-
     try {
+      const apiKey = '871e86966ba8d7c07af3f1df5b06ee9b';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
       const response = await axios.get(apiUrl);
       const data = response.data;
 
@@ -20,7 +18,8 @@ export class WeatherService {
         data
       };
     } catch (error) {
-      throw new Error('Failed to fetch weather data');
+      console.error('Error fetching weather data:', error);
+      throw new HttpException('Failed to fetch weather data', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
